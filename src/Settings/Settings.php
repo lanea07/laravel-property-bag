@@ -124,7 +124,13 @@ class Settings
             return $this->ruleValidator->validate($rule, $value);
         }
 
-        return in_array($value, $allowed, true);
+        if (!is_array($value)) {
+            return in_array($value, $allowed, true);
+        }
+        if (is_array($value)) {
+            $in_array = array_intersect($value, $allowed);
+            return count($in_array);
+        }
     }
 
     /**
