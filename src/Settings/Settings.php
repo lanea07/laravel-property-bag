@@ -202,8 +202,8 @@ class Settings
         if ($this->isRegistered($key)) {
             return collect([
                 'allowed' => $this->getRegistered()[$key]['allowed'],
-                'title' => $this->getRegistered()[$key]['title'],
-                'description' => $this->getRegistered()[$key]['description']
+                'title' => $this->getRegistered()[$key]['title'] ?? null,
+                'description' => $this->getRegistered()[$key]['description'] ?? null
             ]);
         }
     }
@@ -218,8 +218,8 @@ class Settings
         return $this->getRegistered()->map(function ($value) {
             return [
                 'allowed' => $value['allowed'],
-                'title' => $value['title'],
-                'description' => $value['description']
+                'title' => $value['title'] ?? null,
+                'description' => $value['description'] ?? null
             ];
         });
     }
