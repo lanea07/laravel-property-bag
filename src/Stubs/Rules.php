@@ -7,7 +7,7 @@ class Rules
     // /**
     //  * Example rule method.
     //  * See README for more info:
-    //  * https://github.com/zachleigh/laravel-property-bag#validation-rules
+    //  * https://github.com/lanea07/laravel-property-bag#validation-rules
     //  *
     //  * @param  mixed  $value  Value being validated by rule.
     //  * @param  string $param1 First parameter passed in rule declaration.

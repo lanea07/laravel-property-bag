@@ -200,7 +200,11 @@ class Settings
     public function getAllowed($key)
     {
         if ($this->isRegistered($key)) {
-            return collect($this->getRegistered()[$key]['allowed']);
+            return collect([
+                'allowed' => $this->getRegistered()[$key]['allowed'],
+                'title' => $this->getRegistered()[$key]['title'],
+                'description' => $this->getRegistered()[$key]['description']
+            ]);
         }
     }
 
@@ -212,7 +216,11 @@ class Settings
     public function allAllowed()
     {
         return $this->getRegistered()->map(function ($value) {
-            return $value['allowed'];
+            return [
+                'allowed' => $value['allowed'],
+                'title' => $value['title'],
+                'description' => $value['description']
+            ];
         });
     }
 

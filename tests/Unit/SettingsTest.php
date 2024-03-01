@@ -137,7 +137,6 @@ class SettingsTest extends TestCase
     public function a_resource_can_get_all_the_default_values()
     {
         $defaults = $this->user->settings()->allDefaults();
-
         $this->assertEquals([
             'test_settings1' => 'monkey',
             'test_settings2' => true,
@@ -151,8 +150,7 @@ class SettingsTest extends TestCase
     public function a_resource_can_get_the_allowed_values()
     {
         $allowed = $this->user->settings()->getAllowed('test_settings1');
-
-        $this->assertEquals(['bananas', 'grapes', 8, 'monkey'], $allowed->all());
+        $this->assertEquals(['allowed' => ['bananas', 'grapes', 8, 'monkey'], 'title' => 'Test Setting 1', 'description' => 'This is a test setting.'], $allowed->all());
     }
 
     /**
@@ -161,8 +159,7 @@ class SettingsTest extends TestCase
     public function a_resource_can_get_all_allowed_values()
     {
         $allowed = $this->user->settings()->allAllowed()->flatten();
-
-        $this->assertCount(14, $allowed);
+        $this->assertCount(20, $allowed);
     }
 
     /**
@@ -430,9 +427,9 @@ class SettingsTest extends TestCase
         $allowed = $post->allowedSetting();
 
         $actual = [
-            'test_settings1' => ['bananas', 'grapes', 8, 'monkey'],
-            'test_settings2' => [true, false],
-            'test_settings3' => [true, false, 'true', 'false', 0, 1, '0', '1'],
+            'test_settings1' => ['allowed' => ['bananas', 'grapes', 8, 'monkey'], 'title' => 'Test Setting 1', 'description' => 'This is a test setting.'],
+            'test_settings2' => ['allowed' => [true, false], 'title' => 'Test Setting 2', 'description' => 'This is another test setting.'],
+            'test_settings3' => ['allowed' => [true, false, 'true', 'false', 0, 1, '0', '1'], 'title' => 'Test Setting 3', 'description' => 'This is yet another test setting.'],
         ];
 
         $this->assertEquals($actual, $allowed->all());

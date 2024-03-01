@@ -1,6 +1,6 @@
 {
     "name": "lanea07/laravel-property-bag",
-    "description": "Easy Laravel user settings using a property bag. Fork of original project by zachleigh (https://github.com/zachleigh/laravel-property-bag)",
+    "description": "Easy Laravel user settings using a property bag. Fork from original project by zachleigh (https://github.com/zachleigh/laravel-property-bag)",
     "type": "project",
     "keywords": [
         "laravel",
@@ -14,7 +14,7 @@
     "license": "MIT",
     "authors": [
         {
-            "name": "Zach Leigh",
+            "name": "lanea07",
             "email": "lanea07@outlook.com"
         }
     ],
