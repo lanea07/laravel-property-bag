@@ -27,6 +27,7 @@ class SettingsTest extends TestCase
      */
     public function exception_is_thrown_when_config_file_not_found()
     {
+        $this->expectException(\LaravelPropertyBag\Exceptions\ResourceNotFound::class);
         $this->makeAdmin()->settings();
     }
 
@@ -39,7 +40,7 @@ class SettingsTest extends TestCase
 
         $this->assertInstanceOf(Collection::class, $registered);
 
-        $this->assertCount(17, $registered->flatten());
+        $this->assertCount(23, $registered->flatten());
     }
 
     /**
@@ -389,6 +390,7 @@ class SettingsTest extends TestCase
     {
         $this->actingAs($this->user);
 
+        $this->expectException(\LaravelPropertyBag\Exceptions\InvalidSettingsValue::class);
         $this->user->settings()->set([
             'test_settings1' => 'invalid',
         ]);
@@ -473,6 +475,7 @@ class SettingsTest extends TestCase
     {
         $comment = $this->makeComment();
 
+        $this->expectException(\LaravelPropertyBag\Exceptions\InvalidSettingsValue::class);
         $comment->settings()->set(['alpha' => 4]);
     }
 

@@ -37,6 +37,7 @@ class RuleTest extends TestCase
      */
     public function throws_exception_for_rule_not_declared()
     {
+        $this->expectException(\LaravelPropertyBag\Exceptions\InvalidSettingsRule::class);
         $this->makeComment()->settings()->isValid('invalid', 'test');
     }
 
