@@ -2,21 +2,21 @@
 
 namespace LaravelPropertyBag\tests;
 
-use Hash;
-use LaravelPropertyBag\ServiceProvider;
 use Illuminate\Contracts\Console\Kernel;
+use Illuminate\Foundation\Application;
+use Illuminate\Support\Facades\Hash;
+use LaravelPropertyBag\ServiceProvider;
 use LaravelPropertyBag\tests\Classes\Post;
 use LaravelPropertyBag\tests\Classes\User;
 use LaravelPropertyBag\tests\Classes\Admin;
 use LaravelPropertyBag\tests\Classes\Group;
 use LaravelPropertyBag\tests\Classes\Comment;
-use Laravel\BrowserKitTesting\TestCase as BaseTestCase;
 use LaravelPropertyBag\tests\Migrations\CreatePostsTable;
 use LaravelPropertyBag\tests\Migrations\CreateUsersTable;
 use LaravelPropertyBag\tests\Migrations\CreateGroupsTable;
 use LaravelPropertyBag\tests\Migrations\CreateCommentsTable;
 
-abstract class TestCase extends BaseTestCase
+class TestCase extends \Orchestra\Testbench\TestCase
 {
     /**
      * Testing property bag register.
@@ -24,28 +24,24 @@ abstract class TestCase extends BaseTestCase
      * @var Collection
      */
     protected $registered;
+    protected $user;
+    protected $app;
 
     /**
      * Creates the application.
      *
      * @return \Illuminate\Foundation\Application
      */
-    public function createApplication()
+    public function createApplication(): Application
     {
-        $app = require __DIR__.'/../vendor/laravel/laravel/bootstrap/app.php';
+        $app = require __DIR__ . '/../vendor/laravel/laravel/bootstrap/app.php';
 
         $app->register(ServiceProvider::class);
 
         $app->make(Kernel::class)->bootstrap();
 
-        return $app;
-    }
+        $this->app = $app;
 
-    /**
-     * Setup DB and test variables before each test.
-     */
-    protected function setUp()
-    {
         parent::setUp();
 
         $this->app['config']->set('database.default', 'sqlite');
@@ -58,7 +54,12 @@ abstract class TestCase extends BaseTestCase
         $this->migrate();
 
         $this->user = $this->makeUser();
+
+        return $app;
+
     }
+
+
 
     /**
      * Run migrations.
@@ -73,7 +74,7 @@ abstract class TestCase extends BaseTestCase
 
         (new CreateCommentsTable())->up();
 
-        require_once __DIR__.
+        require_once __DIR__ .
             '/../src/Migrations/2016_09_19_000000_create_property_bag_table.php';
 
         $userSettingsTable = 'CreatePropertyBagTable';

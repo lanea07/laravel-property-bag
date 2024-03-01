@@ -32,7 +32,7 @@ class HasSettingsTest extends TestCase
             $this->user->settings()->allSaved()->all()
         );
 
-        $this->seeInDatabase('property_bag', [
+        $this->assertDatabaseHas('property_bag', [
             'resource_id'   => $this->user->id,
             'resource_type' => 'LaravelPropertyBag\tests\Classes\User',
             'key'           => 'test_settings1',
@@ -57,14 +57,14 @@ class HasSettingsTest extends TestCase
             $this->user->settings()->allSaved()->all()
         );
 
-        $this->seeInDatabase('property_bag', [
+        $this->assertDatabaseHas('property_bag', [
             'resource_id'   => $this->user->id,
             'resource_type' => 'LaravelPropertyBag\tests\Classes\User',
             'key'           => 'test_settings1',
             'value'         => json_encode('["bananas"]'),
         ]);
 
-        $this->seeInDatabase('property_bag', [
+        $this->assertDatabaseHas('property_bag', [
             'resource_id'   => $this->user->id,
             'resource_type' => 'LaravelPropertyBag\tests\Classes\User',
             'key'           => 'test_settings3',
@@ -123,7 +123,7 @@ class HasSettingsTest extends TestCase
     {
         $allowed = $this->user->allowedSetting('test_settings1');
 
-        $this->assertEquals(['bananas', 'grapes', 8, 'monkey'], $allowed->all());
+        $this->assertEquals(['allowed' => ['bananas', 'grapes', 8, 'monkey'], 'title' => 'Test Setting 1', 'description' => 'This is a test setting.'], $allowed->all());
     }
 
     /**
@@ -134,9 +134,9 @@ class HasSettingsTest extends TestCase
         $allowed = $this->user->allowedSetting();
 
         $actual = [
-            'test_settings1' => ['bananas', 'grapes', 8, 'monkey'],
-            'test_settings2' => [true, false],
-            'test_settings3' => [true, false, 'true', 'false', 0, 1, '0', '1'],
+            'test_settings1' => ['allowed' => ['bananas', 'grapes', 8, 'monkey'], 'title' => 'Test Setting 1', 'description' => 'This is a test setting.'],
+            'test_settings2' => ['allowed' => [true, false], 'title' => 'Test Setting 2', 'description' => 'This is another test setting.'],
+            'test_settings3' => ['allowed' => [true, false, 'true', 'false', 0, 1, '0', '1'], 'title' => 'Test Setting 3', 'description' => 'This is yet another test setting.'],
         ];
 
         $this->assertEquals($actual, $allowed->all());

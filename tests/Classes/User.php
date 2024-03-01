@@ -2,10 +2,10 @@
 
 namespace LaravelPropertyBag\tests\Classes;
 
-use App\User as BaseUser;
 use LaravelPropertyBag\Settings\HasSettings;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class User extends BaseUser
+class User extends Authenticatable
 {
     use HasSettings;
 
@@ -16,6 +16,7 @@ class User extends BaseUser
      */
     protected $table = 'users';
 
+    protected $fillable = ['name', 'email', 'password'];
     /**
      * Settings config class.
      *

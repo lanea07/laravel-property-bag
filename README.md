@@ -1,16 +1,10 @@
 # Laravel Property Bag
-[![Latest Stable Version](https://img.shields.io/packagist/v/zachleigh/laravel-property-bag.svg)](//packagist.org/packages/zachleigh/laravel-property-bag)
-[![License](https://img.shields.io/badge/license-MIT-brightgreen.svg)](//packagist.org/packages/zachleigh/laravel-property-bag)
-[![Build Status](https://img.shields.io/travis/zachleigh/laravel-property-bag/master.svg)](https://travis-ci.org/zachleigh/laravel-property-bag)
-[![Quality Score](https://img.shields.io/scrutinizer/g/zachleigh/laravel-property-bag.svg)](https://scrutinizer-ci.com/g/zachleigh/laravel-property-bag/)
-[![StyleCI](https://styleci.io/repos/60463173/shield?style=flat)](https://styleci.io/repos/60463173)
-[![Total Downloads](https://img.shields.io/packagist/dt/zachleigh/laravel-property-bag.svg)](https://packagist.org/packages/zachleigh/laravel-property-bag)
 
 ##### Simple settings for Laravel apps.
   - Easily give multiple resources settings
   - Simple to add additional settings as your app grows
   - Set default settings and limit setting values for security
-  - Fully configurable
+  - Add Title and Description to settings, so users can understand better what it is or what it does
 
 ### Contents
   - [Upgrade Information](#upgrade-information)
@@ -20,40 +14,70 @@
   - [Methods](#methods)
   - [Validation Rules](#validation-rules)
   - [Advanced Configuration](#advanced-configuration)
+  - [Testing](#testing)
   - [Contributing](#contributing)
 
-### Upgrade Information
-##### From 1.3.* to 1.4.0
-1.4.0 drops support for PHP 7.1 and adds support for Laravel 6.
+## Upgrade Information
+### From 1.0.0 to 2.0.0
+#### Major update
 
-##### From 1.2.* to 1.3.0
-1.3.0 drops support for PHP 7.0.
+> [!CAUTION]
+> This update is incompatible with previous releases since it changes the structure of the settings
 
-##### From 1.1.* to 1.2.0
-1.2.0 drops support for PHP 5.6. It will likely still work in older PHP versions, but bugs or issues that focus specifically on 5.6 or lower will no longer be dealt with. Support for PHP 7.2 added.
-
-##### From 1.0.* to 1.1.0
-1.1.0 adds Lumen support and support for Laravel 5.4 (thanks tzurbaev). There should be no breaking changes. If using Laravel 5.3, please use [Version 1.0.5](https://github.com/zachleigh/laravel-property-bag/tree/v1.0.5):
+When using `$model->allowedSetting($key)`, it now returns an 'allowed' key with an array of all allowed values for the setting, plus a `title` and `description` keys which can be used to enhance info about the setting. If no key is provided, it returns an array of settings, each one with this new configuration
+```php
+protected $registeredSettings = [
+    'test_settings1' => [
+        'allowed' => ['bananas', 'grapes', 8, 'monkey'],
+        'default' => 'monkey',
+        'title' => 'Test Setting 1',
+        'description' => 'This is a test setting.',
+    ],
+];
 ```
-composer require zachleigh/laravel-property-bag:1.0.*
-```
 
-##### From 0.9.* to 1.0.0
-Version 1.0.0 brings major changes to the package that make it incompatible with previous versions. The package was essentially rewritten making upgrade from 0.9.7 to 1.0.0 difficult at best.
+### Fork from zachleigh/laravel-property-bag 1.4.0 to lanea07/laravel-property-bag 1.0.0
+Update dev dependencies to match:
+```
+php: "^8.1"
+laravel/laravel: "^10.3"
+orchestra/testbench: "^8.21",
+phpunit/phpunit: "^10.1",
+```
 
 ### About
 Laravel Property Bag gives your application resources savable, secure settings by using a single database property bag table. The benefit of using this kind of settings table, as opposed to say a json blob column on the resource table, is that if in the future you decide to change a setting value, a simple database query can easily take care of it.
 
 ### Install
-##### 1. Install through composer
-```
-composer require zachleigh/laravel-property-bag
+##### 1. Install using composer
+Since this is a frok from the original project by zachleigh/laravel-property-bag, if you plan to include this this fork in your project you must include the original package using the `dev-master` branch, and also include this repository into the composer.json file of your app
+
+###### composer.json
+```php
+...
+
+"repositories": [
+    {
+        "type": "vcs",
+        "url": "https://github.com/lanea07/laravel-property-bag",
+    },
+],
+
+...
+
+"require": {
+    ...
+    "zachleigh/laravel-property-bag": "dev-master",
+    ...
+},
+
+...
 ```
 
 #### Laravel Installation
 
 ##### a. Register the service provider
-In Laravel's config/app.php file, add the service provider to the array with the 'providers' key.
+In Laravel's `config/app.php` file, add the service provider to the array with the 'providers' key.
 ```
 LaravelPropertyBag\ServiceProvider::class
 ```
@@ -62,20 +86,6 @@ LaravelPropertyBag\ServiceProvider::class
 ```
 php artisan vendor:publish --provider="LaravelPropertyBag\ServiceProvider"
 ```
-
-#### Lumen Installation
-
-##### a. Enable Eloquent
-If you haven't already done so, find and uncomment `$app->withEloquent()` in `app/boostrap.php`.
-
-##### b. Register the service provider
-In Lumen's app/bootstrap.php file, add the service provider:
-```php
-$app->register(LaravelPropertyBag\ServiceProvider::class);
-```
-
-##### c. Copy migration file
-Since Lumen doesn't offer the `php artisan vendor:publish` command, you have to copy the migration file manually from the `vendor/zachleigh/laravel-property-bag/src/Migrations` directory to the `database/migrations` directory.
 
 ##### 2. Run the migration
 ```
@@ -107,16 +117,19 @@ class User extends Model
 ```
 
 ##### 2. Register your settings plus their allowed values and defaults
-After publishing the UserSettings file (hopefully you did this above), register settings in the UserSettings class.
+After publishing the UserSettings file register settings in the UserSettings class.
 ```php
 protected $registeredSettings = [
-    'example_setting' => [
-        'allowed' => [true, false],
-        'default' => false
-    ]
+    'test_settings1' => [
+        'allowed' => ['bananas', 'grapes', 8, 'monkey'],
+        'default' => 'monkey',
+        'title' => 'Test Setting 1',
+        'description' => 'This is a test setting.',
+    ],
 ];
 ```
 Each setting must contain an array of allowed values and a default value. It is also possible to use [validation rules](#validation-rules) instead of hardcoding allowed values.
+The `title` and `description` keys are used to offer a better understanding of the setting. You can use this, for example, in a frontend where users can change its own settings...
 
 ##### 3. Set the setting from the user model
 ```php
@@ -141,7 +154,7 @@ $value = $user->settings('example_setting');
 // or
 $value = $user->settings()->get('example_setting');
 ```
-If the value has not been set, the registered default value will be returned. **Note that default values are not stored in the database in order to limit database size.**
+If the value has not been set, the registered default value will be returned. **Note that default values are not stored in the database in order to limit database size. This rule also applies to title and description keys.**
 
 ### Methods
 
@@ -345,7 +358,7 @@ Another option would be to validate input with Laravel's built in validation, wh
 Laravel Property Bag gives you several ways to configure the package to fit your needs and wants.
 
 ###### I don't want to register settings as an array
-Cool. I get it. Especially if you have dozens of settings, dealing with an array can be annoying. In the model settings config file, add the registeredSettings method.
+Especially if you have dozens of settings, dealing with an array can be annoying. In the model settings config file, add the registeredSettings method.
 ```php
 /**
  * Return a collection of registered settings.
@@ -364,6 +377,8 @@ In this method, do whatever you want and return a collection of items that has t
 'example_setting' => [
     'allowed' => [true, false],
     'default' => true
+    'title' => 'A Title',
+    'description' => 'What this setting is or does'
 ]
 ```
 
@@ -420,5 +435,8 @@ public function registeredSettings()
 }
 ```
 
+## Testing
+This upgrade uses laravel's latest testing package :link: [Orchestral Testbench](https://packages.tools/testbench), so after running `composer install` it is recomended to follow instructions about how to setup this package before running tests.
+
 ### Contributing
-Contributions are more than welcome. Fork, improve and make a pull request. For bugs, ideas for improvement or other, please create an [issue](https://github.com/zachleigh/laravel-property-bag/issues).
+Contributions are more than welcome. Fork, improve and make a pull request. For bugs, ideas for improvement or other, please create an [issue](https://github.com/lanea07/laravel-property-bag/issues).
