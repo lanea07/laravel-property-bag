@@ -171,7 +171,7 @@ class SettingsTest extends TestCase
     {
         $this->user->settings()->set(['test_settings3' => true]);
 
-        $this->seeInDatabase('property_bag', [
+        $this->assertDatabaseHas('property_bag', [
             'resource_id'   => $this->user->id,
             'resource_type' => 'LaravelPropertyBag\tests\Classes\User',
             'value'         => json_encode('[true]'),
@@ -211,7 +211,7 @@ class SettingsTest extends TestCase
             $settings->allSaved()->all()
         );
 
-        $this->seeInDatabase('property_bag', [
+        $this->assertDatabaseHas('property_bag', [
             'resource_id'   => $this->user->id,
             'resource_type' => 'LaravelPropertyBag\tests\Classes\User',
             'key'           => 'test_settings1',
@@ -225,7 +225,7 @@ class SettingsTest extends TestCase
             $settings->allSaved()->all()
         );
 
-        $this->seeInDatabase('property_bag', [
+        $this->assertDatabaseHas('property_bag', [
             'resource_id'   => $this->user->id,
             'resource_type' => 'LaravelPropertyBag\tests\Classes\User',
             'key'           => 'test_settings1',
@@ -253,14 +253,14 @@ class SettingsTest extends TestCase
 
         $this->assertEquals($test, $settings->allSaved()->all());
 
-        $this->seeInDatabase('property_bag', [
+        $this->assertDatabaseHas('property_bag', [
             'resource_id'   => $this->user->id,
             'resource_type' => 'LaravelPropertyBag\tests\Classes\User',
             'key'           => 'test_settings1',
             'value'         => json_encode('["grapes"]'),
         ]);
 
-        $this->seeInDatabase('property_bag', [
+        $this->assertDatabaseHas('property_bag', [
             'resource_id'   => $this->user->id,
             'resource_type' => 'LaravelPropertyBag\tests\Classes\User',
             'key'           => 'test_settings2',
@@ -361,7 +361,7 @@ class SettingsTest extends TestCase
             'test_settings1' => 'grapes',
         ]);
 
-        $this->seeInDatabase('property_bag', [
+        $this->assertDatabaseHas('property_bag', [
             'resource_id' => $this->user->id,
             'key'         => 'test_settings1',
             'value'       => json_encode('["grapes"]'),
@@ -371,7 +371,7 @@ class SettingsTest extends TestCase
             'test_settings1' => 'monkey',
         ]);
 
-        $this->dontSeeInDatabase('property_bag', [
+        $this->assertDatabaseMissing('property_bag', [
             'resource_id'   => $this->user->id,
             'resource_type' => 'LaravelPropertyBag\tests\Classes\User',
             'key'           => 'test_settings1',

@@ -1,46 +1,71 @@
 {
-    "name": "zachleigh/laravel-property-bag",
-    "description": "Easy Laravel user settings using a property bag",
+    "name": "lanea07/laravel-property-bag",
+    "description": "Easy Laravel user settings using a property bag. Fork of original project by zachleigh (https://github.com/zachleigh/laravel-property-bag)",
     "type": "project",
-    "keywords": ["laravel", "user", "settings", "property", "user settings", "propety bag"],
-    "homepage": "https://github.com/zachleigh/laravel-property-bag",
+    "keywords": [
+        "laravel",
+        "user",
+        "settings",
+        "property",
+        "user settings",
+        "propety bag"
+    ],
+    "homepage": "https://github.com/lanea07/laravel-property-bag",
     "license": "MIT",
     "authors": [
         {
             "name": "Zach Leigh",
-            "email": "zachleigh@fastmail.jp"
+            "email": "lanea07@outlook.com"
         }
     ],
-
     "require": {
-        "php": ">=7.1"
+        "php": "^8.1"
     },
-
     "require-dev": {
-        "laravel/laravel": "^6.0",
-        "laravel/browser-kit-testing": "~1.0",
-        "phpunit/phpunit": "~4.0"
+        "orchestra/testbench": "^8.21",
+        "phpunit/phpunit": "^10.1",
+        "laravel/laravel": "^10.3"
     },
-
     "autoload": {
         "psr-4": {
             "LaravelPropertyBag\\": "src/"
         }
     },
-
     "autoload-dev": {
         "psr-4": {
-            "LaravelPropertyBag\\tests\\": "tests/"
+            "LaravelPropertyBag\\tests\\": "tests/",
+            "Workbench\\App\\": "workbench/app/",
+            "Workbench\\Database\\Factories\\": "workbench/database/factories/",
+            "Workbench\\Database\\Seeders\\": "workbench/database/seeders/"
         }
     },
-
     "minimum-stability": "stable",
     "prefer-stable": true,
-    "extra":{
-        "laravel":{
-            "providers":[
+    "extra": {
+        "laravel": {
+            "providers": [
                 "LaravelPropertyBag\\ServiceProvider"
             ]
         }
+    },
+    "scripts": {
+        "post-autoload-dump": [
+            "@clear",
+            "@prepare"
+        ],
+        "clear": "@php vendor/bin/testbench package:purge-skeleton --ansi",
+        "prepare": "@php vendor/bin/testbench package:discover --ansi",
+        "build": "@php vendor/bin/testbench workbench:build --ansi",
+        "serve": [
+            "Composer\\Config::disableProcessTimeout",
+            "@build",
+            "@php vendor/bin/testbench serve"
+        ],
+        "lint": [
+            "@php vendor/bin/phpstan analyse"
+        ],
+        "test": [
+            "@php vendor/bin/phpunit"
+        ]
     }
 }

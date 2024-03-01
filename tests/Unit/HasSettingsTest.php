@@ -32,7 +32,7 @@ class HasSettingsTest extends TestCase
             $this->user->settings()->allSaved()->all()
         );
 
-        $this->seeInDatabase('property_bag', [
+        $this->assertDatabaseHas('property_bag', [
             'resource_id'   => $this->user->id,
             'resource_type' => 'LaravelPropertyBag\tests\Classes\User',
             'key'           => 'test_settings1',
@@ -57,14 +57,14 @@ class HasSettingsTest extends TestCase
             $this->user->settings()->allSaved()->all()
         );
 
-        $this->seeInDatabase('property_bag', [
+        $this->assertDatabaseHas('property_bag', [
             'resource_id'   => $this->user->id,
             'resource_type' => 'LaravelPropertyBag\tests\Classes\User',
             'key'           => 'test_settings1',
             'value'         => json_encode('["bananas"]'),
         ]);
 
-        $this->seeInDatabase('property_bag', [
+        $this->assertDatabaseHas('property_bag', [
             'resource_id'   => $this->user->id,
             'resource_type' => 'LaravelPropertyBag\tests\Classes\User',
             'key'           => 'test_settings3',

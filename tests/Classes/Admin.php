@@ -2,10 +2,10 @@
 
 namespace LaravelPropertyBag\tests\Classes;
 
-use App\User as BaseUser;
+use Illuminate\Database\Eloquent\Model;
 use LaravelPropertyBag\Settings\HasSettings;
 
-class Admin extends BaseUser
+class Admin extends Model
 {
     use HasSettings;
 

@@ -2,7 +2,7 @@
 
 namespace LaravelPropertyBag\tests\Unit;
 
-use File;
+use Illuminate\Support\Facades\File;
 use LaravelPropertyBag\tests\TestCase;
 use LaravelPropertyBag\Settings\Rules\RuleValidator;
 
