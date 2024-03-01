@@ -2,3 +2,6 @@
 .env
 composer.lock
 .idea
+/workbench
+/.vscode
+.phpunit.result.cache
