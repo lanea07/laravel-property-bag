@@ -50,24 +50,26 @@ Laravel Property Bag gives your application resources savable, secure settings b
 
 ### Install
 ##### 1. Install using composer
-Since this is a frok from the original project by zachleigh/laravel-property-bag, if you plan to include this this fork in your project you must include the original package using the `dev-master` branch, and also include this repository into the composer.json file of your app
+Since this is a frok from the original project by zachleigh/laravel-property-bag, if you plan to include this this fork in your project you must include the package name using the latest release, and also include this repository into the composer.json file of your app
 
 ###### composer.json
 ```php
 ...
 
 "repositories": [
+    ...
     {
         "type": "vcs",
         "url": "https://github.com/lanea07/laravel-property-bag",
     },
+    ...
 ],
 
 ...
 
 "require": {
     ...
-    "zachleigh/laravel-property-bag": "dev-master",
+    "lanea07/laravel-property-bag": "^2.0",
     ...
 },
 
