@@ -50,7 +50,7 @@ Laravel Property Bag gives your application resources savable, secure settings b
 
 ### Install
 ##### 1. Install using composer
-Since this is a frok from the original project by zachleigh/laravel-property-bag, if you plan to include this this fork in your project you must include the original package using the `dev-master` branch, and also include this repository into the composer.json file of your app
+Since this is a frok from the original project by zachleigh/laravel-property-bag, if you plan to include this fork in your project you must include this repository into the composer.json file of your app
 
 ###### composer.json
 ```php
@@ -64,14 +64,12 @@ Since this is a frok from the original project by zachleigh/laravel-property-bag
 ],
 
 ...
+```
 
-"require": {
-    ...
-    "lanea07/laravel-property-bag": "^2.0",
-    ...
-},
+Then execute the following command:
 
-...
+```sh
+composer require lanea07/laravel-property-bag:^2.0
 ```
 
 #### Laravel Installation
