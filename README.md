@@ -67,7 +67,7 @@ Since this is a frok from the original project by zachleigh/laravel-property-bag
 
 "require": {
     ...
-    "zachleigh/laravel-property-bag": "dev-master",
+    "lanea07/laravel-property-bag": "^2.0",
     ...
 },
 
